@@ -60,14 +60,6 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     /* functions */
-    function getEntranceFee() public view returns (uint256) {
-        return i_entranceFee;
-    }
-
-    function getPlayer(uint256 index) public view returns (address) {
-        return s_players[index];
-    }
-
     function enterRaffle() public payable {
         if (msg.value < i_entranceFee) {
             revert RossRaffle__NotEnoughETHEntered();
@@ -126,7 +118,7 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      */
     function checkUpkeep(
         bytes memory /*checkData*/
-    ) public view override returns (bool upkeepNeeded, bytes memory /*something*/) {
+    ) public view override returns (bool upkeepNeeded, bytes memory something) {
         bool isOpen = (s_raffleState == RaffleState.OPEN);
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
         bool hasPlayers = (s_players.length > 0);
@@ -159,6 +151,14 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     /* views and getters */
+    function getEntranceFee() public view returns (uint256) {
+        return i_entranceFee;
+    }
+
+    function getPlayer(uint256 index) public view returns (address) {
+        return s_players[index];
+    }
+
     function getRecentWinner() public view returns (address) {
         return s_recentWinner;
     }
@@ -171,5 +171,9 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // so we can use PURE instead of VIEW to save gas
     function getNumWords() public pure returns (uint256) {
         return NUM_WORDS;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
     }
 }
