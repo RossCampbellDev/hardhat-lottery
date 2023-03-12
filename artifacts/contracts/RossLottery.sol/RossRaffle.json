@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "RossRaffle",
+  "sourceName": "contracts/RossLottery.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220c4a8003a0417410b6451c5eef63dbcf67a04f54d61aa47d5631a41f2a25d550164736f6c63430008070033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220c4a8003a0417410b6451c5eef63dbcf67a04f54d61aa47d5631a41f2a25d550164736f6c63430008070033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
