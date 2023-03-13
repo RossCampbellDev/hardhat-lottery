@@ -7,12 +7,12 @@ const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("30")
 module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
-    let vrfCoordinatorV2Address, subscriptionId //subid can be got using browser, but we are doing programmatically
+    let vrfCoordinatorV2Mock, vrfCoordinatorV2Address, subscriptionId //subid can be got using browser, but we are doing programmatically
     const chainId = network.config.chainId
 
     // determine type of network, and establish address of the VRF coordinator contract
     if (developmentChains.includes(network.name)) {
-        const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
+        vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
         vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
         const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
         const transactionReceipt = await transactionResponse.wait(1) // this will contain an emitted event which contains our sub id
@@ -39,6 +39,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
+
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, rossRaffle.address)
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("verifying...")

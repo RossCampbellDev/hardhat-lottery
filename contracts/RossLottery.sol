@@ -116,6 +116,19 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      * *** for this to work, our contract needs to be in an "open" state
      * *** so we are not in the middle of a previous lottery
      */
+    /*function checkUpkeepOriginal(
+        bytes memory /*checkData*/
+    /*) public view override returns (bool upkeepNeeded, bytes memory something) {
+        bool isOpen = (s_raffleState == RaffleState.OPEN);
+        bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
+        bool hasPlayers = (s_players.length > 0);
+        bool hasBalance = (address(this).balance > 0);
+
+        // time to end the lottery!
+        //return (isOpen && timePassed && hasPlayers && hasBalance);
+        upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance); // auto returns upkeepNeeded?
+    }*/
+
     function checkUpkeep(
         bytes memory /*checkData*/
     ) public view override returns (bool upkeepNeeded, bytes memory something) {
@@ -173,7 +186,15 @@ contract RossRaffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         return NUM_WORDS;
     }
 
+    function getNumPlayers() public view returns (uint256) {
+        return s_players.length;
+    }
+
     function getInterval() public view returns (uint256) {
         return i_interval;
+    }
+
+    function getLastTimeStamp() public view returns (uint256) {
+        return s_lastTimeStamp;
     }
 }
